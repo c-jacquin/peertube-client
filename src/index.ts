@@ -6,4 +6,4 @@
  * TypeScript Version: 3.2
  */
 
-export { Greeter } from './greeter'
+export { Peertube } from './peertube';

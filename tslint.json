@@ -6,13 +6,13 @@
     "tslint-react",
     "tslint-config-prettier"
   ],
+  "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
+    "prettier": true,
     // types related rules
     "no-inferrable-types": true,
     "no-namespace": {
-      "options": [
-        "allow-declarations"
-      ]
+      "options": ["allow-declarations"]
     },
     "interface-name": {
       "options": "never-prefix"
@@ -34,22 +34,16 @@
           "message": "use #array-constructor"
         },
         {
-          "name": [
-            "describe",
-            "only"
-          ],
+          "name": ["describe", "only"],
           "message": "don't focus spec blocks"
         },
         {
-          "name": [
-            "it",
-            "only"
-          ],
+          "name": ["it", "only"],
           "message": "don't focus tests"
         }
       ]
     },
-    "no-magic-numbers": true,
+    "no-magic-numbers": false,
     "no-require-imports": true,
     "no-boolean-literal-compare": true,
     "no-invalid-this": {
@@ -62,17 +56,13 @@
     "match-default-export-name": true,
     "no-parameter-reassignment": true,
     "file-name-casing": {
-      "options": [
-        "kebab-case"
-      ]
+      "options": ["kebab-case"]
     },
     "switch-default": true,
     // tslint:recommended overrides
     "no-any": true,
     "member-access": {
-      "options": [
-        "no-public"
-      ]
+      "options": ["no-public"]
     },
     "object-literal-sort-keys": false,
     "interface-over-type-literal": false,

@@ -4,34 +4,34 @@
  * **NOTE:**
  * 👉 This file should not use any 3rd party dependency
  */
-const { writeFileSync, copyFileSync } = require('fs')
-const { resolve } = require('path')
-const packageJson = require('../package.json')
+const { writeFileSync, copyFileSync } = require('fs');
+const { resolve } = require('path');
+const packageJson = require('../package.json');
 
-main()
+main();
 
 function main() {
-  const projectRoot = resolve(__dirname, '..')
-  const distPath = resolve(projectRoot, 'dist')
-  const distPackageJson = createDistPackageJson(packageJson)
+  const projectRoot = resolve(__dirname, '..');
+  const distPath = resolve(projectRoot, 'dist');
+  const distPackageJson = createDistPackageJson(packageJson);
 
   copyFileSync(
     resolve(projectRoot, 'README.md'),
-    resolve(distPath, 'README.md')
-  )
+    resolve(distPath, 'README.md'),
+  );
   copyFileSync(
     resolve(projectRoot, 'CHANGELOG.md'),
-    resolve(distPath, 'CHANGELOG.md')
-  )
+    resolve(distPath, 'CHANGELOG.md'),
+  );
   copyFileSync(
     resolve(projectRoot, 'LICENSE.md'),
-    resolve(distPath, 'LICENSE.md')
-  )
+    resolve(distPath, 'LICENSE.md'),
+  );
   copyFileSync(
     resolve(projectRoot, '.npmignore'),
-    resolve(distPath, '.npmignore')
-  )
-  writeFileSync(resolve(distPath, 'package.json'), distPackageJson)
+    resolve(distPath, '.npmignore'),
+  );
+  writeFileSync(resolve(distPath, 'package.json'), distPackageJson);
 }
 
 /**
@@ -47,7 +47,7 @@ function createDistPackageJson(packageConfig) {
     husky,
     'lint-staged': lintStaged,
     ...distPackageJson
-  } = packageConfig
+  } = packageConfig;
 
-  return JSON.stringify(distPackageJson, null, 2)
+  return JSON.stringify(distPackageJson, null, 2);
 }
