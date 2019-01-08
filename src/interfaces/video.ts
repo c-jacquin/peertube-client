@@ -41,10 +41,38 @@ export interface Video {
   };
 }
 
-export interface ListVideoParams {
+export interface BasicListParams {
   count?: number;
   start?: number;
   sort?: string;
+}
+
+export interface AbuseListParams extends BasicListParams {
+  sort?: '-id' | '-createdAt' | '-state';
+}
+
+export interface BlacklistParams extends BasicListParams {
+  sort?:
+    | '-id'
+    | '-name'
+    | '-duration'
+    | '-views'
+    | '-likes'
+    | '-dislikes'
+    | '-uuid'
+    | '-createdAt';
+}
+
+export interface SearchListParams extends BasicListParams {
+  search: string;
+  sort?:
+    | '-name'
+    | '-duration'
+    | '-createdAt'
+    | '-publishedAt'
+    | '-views'
+    | '-likes'
+    | '-match';
 }
 
 export interface ListVideoParamsFull {
@@ -97,4 +125,32 @@ export interface UploadVideoResponse {
     id: number;
     uuid: string;
   };
+}
+
+export interface Abuse {
+  id: number;
+  reason: string;
+  reporterAccount: Account;
+  video: {
+    id: number;
+    name: string;
+    uuid: string;
+    url: string;
+  };
+  createdAt: string;
+}
+
+export interface BlacklistedVideo {
+  id: number;
+  videoId: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  uuid: string;
+  description: string;
+  duration: number;
+  views: number;
+  likes: number;
+  dislikes: number;
+  nsfw: true;
 }

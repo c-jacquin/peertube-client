@@ -23,7 +23,7 @@ export class OAuth {
     this.password = password;
   }
 
-  protected async authenticate() {
+  async authenticate() {
     const { client_id, client_secret } = await ajax<Client>(
       '/oauth-clients/local',
     );
