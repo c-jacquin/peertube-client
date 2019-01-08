@@ -40,7 +40,7 @@
     "commit": "git-cz",
     "style": "npm run format -- --list-different && npm run lint",
     "style:fix": "npm run format:fix && npm run lint:fix",
-    "format": "prettier --config config/prettier.config.js \"**/*.{ts,tsx,js,jsx,css,scss,sass,less,md}\"",
+    "format": "prettier --config prettier.config.js \"**/*.{ts,tsx,js,jsx,css,scss,sass,less,md}\"",
     "format:fix": "npm run format -- --write",
     "lint": "tslint --project tsconfig.json --format codeFrame",
     "lint:fix": "npm run lint -- --fix",
@@ -68,7 +68,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx,css,scss,sass,less,md}": [
-      "prettier --config config/prettier.config.js --write",
+      "prettier --config prettier.config.js --write",
       "git add"
     ],
     "src/**/*.{ts,tsx}": [
@@ -118,7 +118,6 @@
     "tslint-config-standard": "8.0.1",
     "tslint-etc": "1.2.12",
     "tslint-plugin-prettier": "2.0.1",
-    "tslint-react": "3.6.0",
     "typedoc": "0.14.0",
     "typescript": "3.2.2",
     "webpack-config-utils": "2.3.1"

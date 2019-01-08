@@ -3,7 +3,6 @@
     "tslint:recommended",
     "tslint-config-standard",
     "tslint-etc",
-    "tslint-react",
     "tslint-config-prettier"
   ],
   "rulesDirectory": ["tslint-plugin-prettier"],
@@ -72,10 +71,8 @@
     "no-unused-declaration": true,
     "no-missing-dollar-expect": true,
     "no-assign-mutated-array": true,
-    // tslint-react rules
-    "jsx-boolean-value": {
-      "options": "never"
-    }
+
+    "trailing-comma": true
   },
   // apply the same rules for any JS if allowJS is gonna be used
   "jsRules": true

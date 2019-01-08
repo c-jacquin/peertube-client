@@ -1,6 +1,6 @@
 import querystring from 'querystring';
 
-import { ajax, AjaxOptions } from './helpers';
+import { ajax, AjaxOptions, upload } from './helpers';
 import { Client, Token } from './interfaces/auth';
 
 export interface OauthOptions {
@@ -25,7 +25,7 @@ export class OAuth {
 
   protected async authenticate() {
     const { client_id, client_secret } = await ajax<Client>(
-      '/oauth-clients/local'
+      '/oauth-clients/local',
     );
 
     this.clientId = client_id;
@@ -39,8 +39,8 @@ export class OAuth {
         grant_type: 'password',
         response_type: 'code',
         username: this.user,
-        password: this.password
-      })
+        password: this.password,
+      }),
     });
 
     this.accessToken = access_token;
@@ -51,12 +51,24 @@ export class OAuth {
   protected authFetch<T>(input: string, init: AjaxOptions = {}) {
     const headers = {
       ...init.headers,
-      Authorization: `Bearer ${this.accessToken}`
+      Authorization: `Bearer ${this.accessToken}`,
     };
 
     return ajax<T>(`${this.baseUrl}${input}`, {
       ...init,
-      headers
+      headers,
+    });
+  }
+
+  protected authUpload<T>(input: string, init: AjaxOptions = {}) {
+    const headers = {
+      ...init.headers,
+      Authorization: `Bearer ${this.accessToken}`,
+    };
+
+    return upload<T>(`${this.baseUrl}${input}`, {
+      ...init,
+      headers,
     });
   }
 }
