@@ -13,7 +13,14 @@ import {
   UserPayload,
   UserRegisterPayload,
 } from './interfaces/user';
-import { ListVideoParams, Video } from './interfaces/video';
+import {
+  ListVideoParams,
+  ListVideoParamsFull,
+  UpdateVideoPayload,
+  UploadVideoPayload,
+  UploadVideoResponse,
+  Video,
+} from './interfaces/video';
 import { OAuth } from './oauth';
 
 interface PeertubeOptions {
@@ -123,5 +130,71 @@ export class Peertube extends OAuth {
       method: 'POST',
       body,
     });
+  }
+
+  getVideos(query: ListVideoParamsFull): Promise<Video[]> {
+    return ajax<Video[]>('/videos', { query });
+  }
+
+  getVideo(id: string): Promise<Video> {
+    return this.authFetch(`/videos/${id}`);
+  }
+
+  deleteVideo(id: string): Promise<Video> {
+    return this.authFetch(`/videos/${id}`, { method: 'DELETE' });
+  }
+
+  updateVideo(id: string, body: UpdateVideoPayload): Promise<Video> {
+    return this.authFetch<Video>(`/videos/${id}`, { method: 'PUT', body });
+  }
+
+  setVideoWatchingProgress(id: string, body: { currentTime: number }) {
+    return this.authFetch(`/videos/${id}/watching`, { method: 'PUT', body });
+  }
+
+  getVideoOwnershipChangeRequest(id: string) {
+    return this.authFetch(`/videos/${id}/ownership`);
+  }
+
+  acceptVideoOwnershipChange(id: string) {
+    return this.authFetch(`/videos/${id}/ownership/accept`);
+  }
+
+  refuseVideoOwnershipChange(id: string) {
+    return this.authFetch(`/videos/${id}/ownership/refuse`);
+  }
+
+  changeVideoOwnership(id: string, body: { username: string }) {
+    return this.authFetch(`/videos/${id}/give-ownership`, {
+      method: 'POST',
+      body,
+    });
+  }
+
+  uploadVideo(body: UploadVideoPayload): Promise<UploadVideoResponse> {
+    return this.authUpload<UploadVideoResponse>('/videos/upload', {
+      method: 'POST',
+      body,
+    });
+  }
+
+  getVideoDescription(id: string): Promise<string> {
+    return ajax<string>(`/videos/${id}/description`);
+  }
+
+  getCategories(): Promise<string[]> {
+    return ajax<string[]>('/videos/categories');
+  }
+
+  getLicences(): Promise<string[]> {
+    return ajax<string[]>('/videos/licences');
+  }
+
+  getLanguages(): Promise<string[]> {
+    return ajax<string[]>('/videos/languages');
+  }
+
+  getPrivacies(): Promise<string[]> {
+    return ajax<string[]>('/videos/privacies');
   }
 }
