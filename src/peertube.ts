@@ -1,5 +1,6 @@
 import { ajax } from './helpers';
 import { Account } from './interfaces/account';
+import { Channel, CreateChannelPayload } from './interfaces/channel';
 import {
   AvatarPayload,
   AvatarResponse,
@@ -46,8 +47,12 @@ export class Peertube extends OAuth {
     return ajax<Account>(`/accounts/${name}`);
   }
 
-  getVideosByAccount(): Promise<Video[]> {
+  getVideosByAccount(name: string): Promise<Video[]> {
     return ajax<Video[]>(`/accounts/${name}/videos`);
+  }
+
+  getChannelByAccount(name: string): Promise<Channel[]> {
+    return ajax<Channel[]>(`/accounts/${name}/video-channels`);
   }
 
   createUser(body: UserPayload): Promise<CreateUserResponse> {
@@ -196,5 +201,29 @@ export class Peertube extends OAuth {
 
   getPrivacies(): Promise<string[]> {
     return ajax<string[]>('/videos/privacies');
+  }
+
+  getChannels(): Promise<Channel[]> {
+    return ajax<Channel[]>('/video-channels');
+  }
+
+  createChannel(body: CreateChannelPayload): Promise<Channel> {
+    return this.authFetch<Channel>('/video-channels', { method: 'POST', body });
+  }
+
+  getChannel(id: string): Promise<Channel> {
+    return ajax<Channel>(`/video-channels/${id}`);
+  }
+
+  updateChannel(id: string, body: CreateChannelPayload): Promise<Channel> {
+    return this.authFetch(`/video-channels/${id}`, { method: 'PUT', body });
+  }
+
+  removeChannel(id: string): Promise<void> {
+    return this.authFetch(`/video-channels/${id}`, { method: 'DELETE' });
+  }
+
+  getVideoByChannel(id: string): Promise<Video[]> {
+    return ajax(`/video-channels/${id}/video`);
   }
 }
