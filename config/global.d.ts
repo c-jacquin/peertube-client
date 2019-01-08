@@ -54,6 +54,10 @@ declare module 'rollup-plugin-terser' {
   const terser: RollupPluginImpl;
   export { terser };
 }
+declare module 'rollup-plugin-node-globals' {
+  const plugin: RollupPluginImpl;
+  export default plugin;
+}
 
 // =====================∫
 // missing library types

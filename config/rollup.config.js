@@ -7,6 +7,7 @@ import replace from 'rollup-plugin-replace';
 import { uglify } from 'rollup-plugin-uglify';
 import { terser } from 'rollup-plugin-terser';
 import { getIfUtils, removeEmpty } from 'webpack-config-utils';
+import globals from 'rollup-plugin-node-globals';
 
 import pkg from '../package.json';
 const {
@@ -50,6 +51,8 @@ const external = Object.keys(pkg.peerDependencies) || [];
  *  @type {Plugin[]}
  */
 const plugins = /** @type {Plugin[]} */ ([
+  // node global
+  globals(),
   // Allow json resolution
   json(),
 

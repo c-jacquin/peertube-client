@@ -1,4 +1,4 @@
-import querystring from 'querystring';
+import querystring from 'query-string';
 
 import { ajax, AjaxOptions, upload } from './helpers';
 import { Client, Token } from './interfaces/auth';
