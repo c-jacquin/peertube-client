@@ -1,17 +1,19 @@
+import { Avatar } from './account';
+
 export interface Actor {
   id: number;
-  uuid: 'string';
-  url: 'string';
-  name: 'string';
-  host: 'string';
+  uuid: string;
+  url: string;
+  name: string;
+  host: string;
   followingCount: number;
   followersCount: number;
-  createdAt: 'string';
-  updatedAt: 'string';
-  avatar: {};
+  createdAt: string;
+  updatedAt: string;
+  avatar: Avatar;
 }
 
-export interface FollowServer {
+export interface Server {
   id: number;
   follower: Actor;
   following: Actor;

@@ -1,3 +1,5 @@
+import { BasicListParams } from './video';
+
 export interface UserPayload {
   username: string;
   password: string;
@@ -30,12 +32,6 @@ export interface AvatarPayload {
   avatarfile: string;
 }
 
-export interface AvatarResponse {
-  path: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface CreateUserResponse {
   id: number;
   uuid: string;
@@ -47,26 +43,10 @@ export interface User {
   email: string;
   displayNSFW: boolean;
   autoPlayVideo: boolean;
-  role: 'User';
+  role: 0 | 1 | 2;
   videoQuota: number;
   createdAt: string;
-  account: {
-    id: number;
-    uuid: string;
-    url: string;
-    name: string;
-    host: string;
-    followingCount: number;
-    followersCount: number;
-    createdAt: string;
-    updatedAt: string;
-    avatar: {
-      path: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-    displayName: string;
-  };
+  account: Account;
   videoChannels: [
     {
       displayName: string;
@@ -80,15 +60,8 @@ export interface User {
   ];
 }
 
-export interface ListUserParams {
-  count?: number;
-  start?: number;
+export interface ListUserParams extends BasicListParams {
   sort?: '-id' | '-username' | '-createdAt';
-}
-
-export interface MyRating {
-  id: string;
-  rating: 0;
 }
 
 export interface Subscription {

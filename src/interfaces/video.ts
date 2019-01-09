@@ -1,25 +1,23 @@
+import { Channel } from './channel';
+
+export interface SimpleItem {
+  id: number;
+  label: string;
+}
+
 export interface Video {
   id: number;
   uuid: string;
   createdAt: string;
   publishedAt: string;
   updatedAt: string;
-  category: {
-    id: number;
-    label: string;
-  };
-  licence: {
-    id: number;
-    label: string;
-  };
-  language: {
-    id: string;
-    label: string;
-  };
+  category: SimpleItem;
+  licence: SimpleItem;
+  language: SimpleItem;
   privacy: string;
   description: string;
   duration: number;
-  isLocal: true;
+  isLocal: boolean;
   name: string;
   thumbnailPath: string;
   previewPath: string;
@@ -27,18 +25,9 @@ export interface Video {
   views: number;
   likes: number;
   dislikes: number;
-  nsfw: true;
-  account: {
-    name: string;
-    displayName: string;
-    url: string;
-    host: string;
-    avatar: {
-      path: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-  };
+  nsfw: boolean;
+  account: Partial<Account>;
+  channel: Partial<Channel>;
 }
 
 export interface BasicListParams {
@@ -152,5 +141,5 @@ export interface BlacklistedVideo {
   views: number;
   likes: number;
   dislikes: number;
-  nsfw: true;
+  nsfw: boolean;
 }

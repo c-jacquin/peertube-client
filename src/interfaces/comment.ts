@@ -10,13 +10,3 @@ export interface Comment {
   totalReplies: number;
   account: Account;
 }
-
-export interface CommentsResponse {
-  total: number;
-  data: Comment[];
-}
-
-export interface CommentResponse {
-  comment: Comment;
-  children: Comment[];
-}

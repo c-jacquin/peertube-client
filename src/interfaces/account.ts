@@ -8,10 +8,17 @@ export interface Account {
   followersCount: number;
   createdAt: string;
   updatedAt: string;
-  avatar: {
-    path: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  avatar: Avatar;
   displayName: string;
+}
+
+export interface List<T> {
+  total: number;
+  data: T[];
+}
+
+export interface Avatar {
+  path: string;
+  createdAt: string;
+  updatedAt: string;
 }

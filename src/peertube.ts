@@ -1,15 +1,13 @@
 import { ajax } from './helpers';
-import { Account } from './interfaces/account';
+import { Account, Avatar, List } from './interfaces/account';
 import { Channel, CreateChannelPayload } from './interfaces/channel';
-import { CommentResponse, CommentsResponse } from './interfaces/comment';
+import { Comment } from './interfaces/comment';
 import { Config } from './interfaces/config';
-import { FollowServer } from './interfaces/server';
+import { Server } from './interfaces/server';
 import {
   AvatarPayload,
-  AvatarResponse,
   CreateUserResponse,
   ListUserParams,
-  MyRating,
   Subscription,
   UpdateMyselfPayload,
   UpdateUserPayload,
@@ -51,69 +49,111 @@ export class Peertube extends OAuth {
     return ajax('/config');
   }
 
-  getAbout() {
+  getAbout(): Promise<string> {
     return ajax('/about');
   }
 
-  getRuntimeConfig() {
-    return this.authFetch('/config/custom');
-  }
-
-  setRuntimeConfig(body: Config) {
-    return this.authFetch('/config/custom', { method: 'PUT', body });
-  }
-
-  removeRuntimeConfig() {
-    return this.authFetch('/config/custom', { method: 'DELETE' });
-  }
-
   getCategories(): Promise<string[]> {
-    return ajax<string[]>('/videos/categories');
+    return ajax('/videos/categories');
   }
 
   getLicences(): Promise<string[]> {
-    return ajax<string[]>('/videos/licences');
+    return ajax('/videos/licences');
   }
 
   getLanguages(): Promise<string[]> {
-    return ajax<string[]>('/videos/languages');
+    return ajax('/videos/languages');
   }
 
   getPrivacies(): Promise<string[]> {
-    return ajax<string[]>('/videos/privacies');
+    return ajax('/videos/privacies');
   }
 
-  getChannels(): Promise<Channel[]> {
-    return ajax<Channel[]>('/video-channels');
+  getChannels(): Promise<List<Channel>> {
+    return ajax('/video-channels');
   }
 
-  getAccounts(): Promise<Account[]> {
-    return ajax<Account[]>('/accounts');
+  getAccounts(): Promise<List<Account>> {
+    return ajax('/accounts');
   }
 
   getAccountByName(name: string): Promise<Account> {
-    return ajax<Account>(`/accounts/${name}`);
+    return ajax(`/accounts/${name}`);
   }
 
-  getVideosByAccount(name: string): Promise<Video[]> {
-    return ajax<Video[]>(`/accounts/${name}/videos`);
+  getVideosByAccount(name: string): Promise<List<Video>> {
+    return ajax(`/accounts/${name}/videos`);
   }
 
-  getChannelByAccount(name: string): Promise<Channel[]> {
-    return ajax<Channel[]>(`/accounts/${name}/video-channels`);
+  getChannelByAccount(name: string): Promise<List<Channel>> {
+    return ajax(`/accounts/${name}/video-channels`);
+  }
+
+  getVideos(query?: ListVideoParamsFull): Promise<List<Video>> {
+    return ajax('/videos', { query });
+  }
+
+  getVideo(id: string): Promise<Video> {
+    return ajax(`/videos/${id}`);
+  }
+
+  getCommentsByVideo(
+    id: string,
+    query?: BasicListParams,
+  ): Promise<List<Comment>> {
+    return ajax(`/videos/${id}/comment-threads`, { query });
+  }
+
+  getComment(
+    id: string,
+    commentId: string,
+  ): Promise<{
+    comment: Comment;
+    children: Comment[];
+  }> {
+    return ajax(`/videos/${id}/comment-threads/${commentId}`);
+  }
+
+  getVideoDescription(id: string): Promise<{ description: string }> {
+    return ajax(`/videos/${id}/description`);
+  }
+
+  getChannel(name: string): Promise<Channel> {
+    return ajax(`/video-channels/${name}`);
+  }
+
+  getVideoByChannel(id: string): Promise<List<Video>> {
+    return ajax(`/video-channels/${id}/video`);
+  }
+
+  getFollowers(): Promise<List<Server>> {
+    return ajax('/server/followers');
+  }
+
+  getFollowedServers(): Promise<List<Server>> {
+    return ajax('/server/following');
+  }
+
+  getFeed(
+    format: 'xml' | 'json' | 'atom',
+    query?: { accountId?: string; accountName?: string },
+  ): Promise<List<Video>> {
+    return ajax(`/feed/videos.${format}`, { query });
+  }
+
+  search(query: SearchListParams): Promise<List<Video>> {
+    return ajax('/search/videos', { query });
   }
 
   createUser(body: UserPayload): Promise<CreateUserResponse> {
-    return this.authFetch<CreateUserResponse>('/users', {
+    return this.authFetch('/users', {
       body,
       method: 'POST',
     });
   }
 
-  getUsers(query?: ListUserParams): Promise<User[]> {
-    return this.authFetch<User[]>('/users', {
-      query,
-    });
+  getUsers(query?: ListUserParams): Promise<List<User>> {
+    return this.authFetch('/users', { query });
   }
 
   removeUser(id: string): Promise<void> {
@@ -121,76 +161,68 @@ export class Peertube extends OAuth {
   }
 
   getUser(id: string): Promise<User> {
-    return this.authFetch<User>(`/users/${id}`);
+    return this.authFetch(`/users/${id}`);
   }
 
   updateUser(id: string, body: UpdateUserPayload): Promise<string> {
-    return this.authFetch<string>(`/users/${id}`, { method: 'PUT', body });
+    return this.authFetch(`/users/${id}`, { method: 'PUT', body });
   }
 
   whoAmI(): Promise<User> {
-    return this.authFetch<User>('/users/me');
+    return this.authFetch('/users/me');
   }
 
   updateMySelf(body: UpdateMyselfPayload): Promise<string> {
-    return this.authFetch<string>('/users/me', { method: 'PUT', body });
+    return this.authFetch('/users/me', { method: 'PUT', body });
   }
 
   getMyQuota(): Promise<number> {
-    return this.authFetch<number>('/users/me/video-quota-used');
+    return this.authFetch('/users/me/video-quota-used');
   }
 
-  getMyRating(videoId: string) {
-    return this.authFetch<MyRating>(`/users/me/videos/${videoId}/rating`);
+  getMyRating(videoId: string): Promise<{ id: string; rating: number }> {
+    return this.authFetch(`/users/me/videos/${videoId}/rating`);
   }
 
-  getMyVideos(query?: BasicListParams): Promise<Video[]> {
-    return this.authFetch<Video[]>('/users/me/videos', { query });
+  getMyVideos(query?: BasicListParams): Promise<List<Video>> {
+    return this.authFetch('/users/me/videos', { query });
   }
 
-  getMySubscriptions(query?: BasicListParams): Promise<Subscription[]> {
-    return this.authFetch<Subscription[]>('/users/me/subscriptions', { query });
+  getMySubscriptions(query?: BasicListParams): Promise<List<Subscription>> {
+    return this.authFetch('/users/me/subscriptions', { query });
   }
 
   getSubcription(uri: string): Promise<Subscription> {
     return this.authFetch(`/users/me/subscriptions/${uri}`);
   }
 
-  addSubscription(body: {}) {
+  addSubscription(body: {}): Promise<Subscription> {
     return this.authFetch('/users/me/subscription', { method: 'POST', body });
   }
 
-  deleteSubcription(uri: string): Promise<Subscription> {
+  deleteSubcription(uri: string): Promise<void> {
     return this.authFetch(`/users/me/subscriptions/${uri}`, {
       method: 'DELETE',
     });
   }
 
-  subscriptionsExist(query?: { uris: string[] }) {
+  subscriptionsExist(query?: { uris: string[] }): Promise<boolean> {
     return this.authFetch('/users/me/subscriptions/exist', { query });
   }
 
-  getSubscribedVideos(query?: BasicListParams): Promise<Video[]> {
-    return this.authFetch<Video[]>('/users/me/subscriptions/videos', { query });
+  getSubscribedVideos(query?: BasicListParams): Promise<List<Video>> {
+    return this.authFetch('/users/me/subscriptions/videos', { query });
   }
 
   registerUser(body: UserRegisterPayload): Promise<User> {
-    return this.authFetch<User>('/users/register', { method: 'POST', body });
+    return this.authFetch('/users/register', { method: 'POST', body });
   }
 
-  updateAvatar(body: AvatarPayload): Promise<AvatarResponse> {
-    return this.authUpload<AvatarResponse>('/users/me/avatar/pick', {
+  updateAvatar(body: AvatarPayload): Promise<Avatar> {
+    return this.authUpload('/users/me/avatar/pick', {
       method: 'POST',
       body,
     });
-  }
-
-  getVideos(query?: ListVideoParamsFull): Promise<Video[]> {
-    return ajax<Video[]>('/videos', { query });
-  }
-
-  getVideo(id: string): Promise<Video> {
-    return this.authFetch(`/videos/${id}`);
   }
 
   deleteVideo(id: string): Promise<Video> {
@@ -201,7 +233,10 @@ export class Peertube extends OAuth {
     return this.authFetch<Video>(`/videos/${id}`, { method: 'PUT', body });
   }
 
-  setVideoWatchingProgress(id: string, body: { currentTime: number }) {
+  setVideoWatchingProgress(
+    id: string,
+    body: { currentTime: number },
+  ): Promise<void> {
     return this.authFetch(`/videos/${id}/watching`, { method: 'PUT', body });
   }
 
@@ -225,7 +260,7 @@ export class Peertube extends OAuth {
   }
 
   uploadVideo(body: UploadVideoPayload): Promise<UploadVideoResponse> {
-    return this.authUpload<UploadVideoResponse>('/videos/upload', {
+    return this.authUpload('/videos/upload', {
       method: 'POST',
       body,
     });
@@ -235,7 +270,7 @@ export class Peertube extends OAuth {
     return this.authFetch(`/videos/${id}/rate`, { method: 'POST', body });
   }
 
-  getreportedVideo(query?: AbuseListParams): Promise<Abuse[]> {
+  getreportedVideo(query?: AbuseListParams): Promise<List<Abuse>> {
     return this.authFetch(`/videos/abuse`, { query });
   }
 
@@ -251,15 +286,10 @@ export class Peertube extends OAuth {
     return this.authFetch(`/videos/${id}/blacklist`, { method: 'DELETE' });
   }
 
-  getBlacklistedVideos(query?: BlacklistParams): Promise<BlacklistedVideo[]> {
+  getBlacklistedVideos(
+    query?: BlacklistParams,
+  ): Promise<List<BlacklistedVideo>> {
     return this.authFetch(`/videos/blacklist`, { query });
-  }
-
-  getCommentsByVideo(
-    id: string,
-    query?: BasicListParams,
-  ): Promise<CommentsResponse> {
-    return ajax(`/videos/${id}/comment-threads`, { query });
   }
 
   createComment(id: string, body: { text: string }): Promise<Comment> {
@@ -267,10 +297,6 @@ export class Peertube extends OAuth {
       method: 'POST',
       body,
     });
-  }
-
-  getComment(id: string, commentId: string): Promise<CommentResponse> {
-    return ajax(`/videos/${id}/comment-threads/${commentId}`);
   }
 
   answerComment(
@@ -284,22 +310,14 @@ export class Peertube extends OAuth {
     });
   }
 
-  deleteAnswer(id: string, commentId: string): Promise<CommentResponse> {
+  deleteAnswer(id: string, commentId: string): Promise<void> {
     return this.authFetch(`/videos/${id}/comment-threads/${commentId}`, {
       method: 'DELETE',
     });
   }
 
-  getVideoDescription(id: string): Promise<string> {
-    return ajax<string>(`/videos/${id}/description`);
-  }
-
   createChannel(body: CreateChannelPayload): Promise<Channel> {
     return this.authFetch<Channel>('/video-channels', { method: 'POST', body });
-  }
-
-  getChannel(id: string): Promise<Channel> {
-    return ajax<Channel>(`/video-channels/${id}`);
   }
 
   updateChannel(id: string, body: CreateChannelPayload): Promise<Channel> {
@@ -310,31 +328,12 @@ export class Peertube extends OAuth {
     return this.authFetch(`/video-channels/${id}`, { method: 'DELETE' });
   }
 
-  getVideoByChannel(id: string): Promise<Video[]> {
-    return ajax(`/video-channels/${id}/video`);
-  }
-
-  followServer(body: FollowServer) {
+  followServer(body: Server) {
     return this.authFetch('/server/following', { method: 'POST', body });
   }
 
   unfollowServer(host: string) {
     return this.authFetch(`/server/following/${host}`, { method: 'DELETE' });
-  }
-
-  getFollowers(): Promise<FollowServer[]> {
-    return ajax('/server/followers');
-  }
-
-  getFollowedServers(): Promise<FollowServer[]> {
-    return ajax('/server/following');
-  }
-
-  getFeed(
-    format: 'xml' | 'json' | 'atom',
-    query?: { accountId?: string; accountName?: string },
-  ): Promise<Video[]> {
-    return ajax(`/feed/videos.${format}`, { query });
   }
 
   getJobs(
@@ -344,7 +343,15 @@ export class Peertube extends OAuth {
     return this.authFetch(`job/${state}`, { query });
   }
 
-  search(query: SearchListParams): Promise<Video[]> {
-    return ajax('/search/videos', { query });
+  getRuntimeConfig() {
+    return this.authFetch('/config/custom');
+  }
+
+  setRuntimeConfig(body: Config) {
+    return this.authFetch('/config/custom', { method: 'PUT', body });
+  }
+
+  removeRuntimeConfig() {
+    return this.authFetch('/config/custom', { method: 'DELETE' });
   }
 }
