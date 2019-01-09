@@ -12,34 +12,34 @@
 ## Installing
 
 ```sh
-yarn add peertube-client
+npm i peertube-client
 ```
 
 ## Getting started
 
+This library handle all the oauth process for you just give an instance host, a username and a password and you are ready to go.
 Let's demonstrate simple usage with ... example:
 
 ```ts
-// your code example
+import { Peertube } from 'peertube-client';
+
+const peertube = new Peertube({
+  instance: 'peertube.fr',
+  user: 'jonsnow',
+  password: 'foo',
+});
+
+const main = async () => {
+  try {
+    const me = await peertube.whoAmI();
+    const videos = await peertube.getVideos();
+    const video = await peertube.getVideo(2345);
+    /* ... */
+  } catch (err) {
+    console.error(err);
+  }
+};
 ```
-
-## Examples
-
-Go checkout [examples](./examples) !
-
-## API
-
-> Document your API here
-
-## Guides
-
-<details>
-<summary>How to do Foo</summary>
-
-Today we're gonna build Foo....
-</detail>
-
----
 
 ## Publishing
 
@@ -56,34 +56,34 @@ Execute `yarn release` which will handle following tasks:
 
 - To get from `1.1.2` to `1.1.2-0`:
 
-`yarn release --prerelease`
+`npm run release --prerelease`
 
 - **Alpha**: To get from `1.1.2` to `1.1.2-alpha.0`:
 
-`yarn release --prerelease alpha`
+`npm run release --prerelease alpha`
 
 - **Beta**: To get from `1.1.2` to `1.1.2-beta.0`:
 
-`yarn release --prerelease beta`
+`npm run release --prerelease beta`
 
 ### Dry run mode
 
 See what commands would be run, without committing to git or updating files
 
-`yarn release --dry-run`
+`npm run release --dry-run`
 
 ### Check what files are gonna be published to npm
 
-- `yarn pack` OR `yarn release:preflight` which will create a tarball with everything that would get published to NPM
+- `npm run pack` OR `npm run release:preflight` which will create a tarball with everything that would get published to NPM
 
 ## Tests
 
 Test are written and run via Jest 💪
 
 ```
-yarn test
+npm test
 # OR
-yarn test:watch
+npm run test:watch
 ```
 
 ## Style guide
@@ -94,12 +94,12 @@ Style guides are enforced by robots, I meant prettier and tslint of course 🤖 
 
 ```sh
 #Format and fix lint errors
-yarn ts:style:fix
+npm run style:fix
 ```
 
 ## Generate documentation
 
-`yarn docs`
+`npm run docs`
 
 ## Commit ( via commitizen )
 
@@ -107,7 +107,7 @@ yarn ts:style:fix
 - if you prefer your custom tool we provide a commit hook linter which will error out, it you provide invalid commit message
 - if you are in rush and just wanna skip commit message validation just prefix your message with `WIP: something done` ( if you do this please squash your work when you're done with proper commit message so standard-version can create Changelog and bump version of your library appropriately )
 
-`yarn commit` - will invoke [commitizen CLI](https://github.com/commitizen/cz-cli)
+`npm run commit` - will invoke [commitizen CLI](https://github.com/commitizen/cz-cli)
 
 ### Troubleshooting
 
