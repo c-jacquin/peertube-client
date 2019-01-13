@@ -1,5 +1,3 @@
-import querystring from 'query-string';
-
 import { ajax, AjaxOptions, upload } from './helpers';
 import { Client, Token } from './interfaces/auth';
 
@@ -11,10 +9,10 @@ export interface OauthOptions {
 
 export class OAuth {
   protected user: string;
+  protected baseUrl: string;
   private accessToken: string | undefined;
   private clientId: string | undefined;
   private clientSecret: string | undefined;
-  private baseUrl: string;
   private password: string;
 
   constructor({ baseUrl, user, password }: OauthOptions) {
@@ -33,7 +31,7 @@ export class OAuth {
 
     const { access_token } = await ajax<Token>(`${this.baseUrl}/users/token`, {
       method: 'POST',
-      body: querystring.stringify({
+      body: JSON.stringify({
         client_id,
         client_secret,
         grant_type: 'password',

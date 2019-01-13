@@ -12,8 +12,8 @@ export const ajax = async <T>(
   if (init && init.body) {
     init.body = JSON.stringify(init.body);
     init.headers = {
-      ...init.headers,
       ['Content-Type']: 'application/json',
+      ...init.headers,
     };
   }
   let url = input;

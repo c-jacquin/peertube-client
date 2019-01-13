@@ -10,7 +10,7 @@ export interface Actor {
   followersCount: number;
   createdAt: string;
   updatedAt: string;
-  avatar: Avatar;
+  avatar?: Avatar;
 }
 
 export interface Server {

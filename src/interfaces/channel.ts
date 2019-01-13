@@ -1,7 +1,7 @@
 import { Avatar } from './account';
 
 export interface Channel {
-  id: string;
+  id: number;
   url: string;
   uuid: string;
   name: string;
@@ -9,7 +9,7 @@ export interface Channel {
   hostRedundancyAllowed: boolean;
   followingCount: number;
   followersCount: number;
-  avatar: Avatar;
+  avatar?: Avatar;
   createdAt: string;
   updatedAt: string;
   displayName: string;
@@ -23,4 +23,11 @@ export interface CreateChannelPayload {
   name: string;
   displayName: string;
   description: string;
+}
+
+export interface CreateChannelResponse {
+  videoChannel: {
+    id: number;
+    uuid: string;
+  };
 }

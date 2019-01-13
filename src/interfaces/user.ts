@@ -9,7 +9,6 @@ export interface UserPayload {
 }
 
 export interface UpdateUserPayload {
-  id: string;
   email: string;
   videoQuota: string;
   role: string;
@@ -25,27 +24,27 @@ export interface UpdateMyselfPayload {
   password: string;
   email: string;
   displayNSFW: string;
-  autoPlayVideo: string;
+  autoPlayVideo: boolean;
 }
 
 export interface AvatarPayload {
   avatarfile: string;
 }
 
-export interface CreateUserResponse {
-  id: number;
-  uuid: string;
-}
+// export interface CreateUserResponse {
+//   id: number;
+//   uuid: string;
+// }
 
 export interface User {
   id: number;
   username: string;
   email: string;
   displayNSFW: boolean;
-  autoPlayVideo: boolean;
   role: 0 | 1 | 2;
-  videoQuota: number;
   createdAt: string;
+  autoPlayVideo: boolean;
+  videoQuota: number;
   account: Account;
   videoChannels: [
     {
