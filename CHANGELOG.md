@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.1"></a>
+
+## [0.1.1](https://github.com/charjac/peertube-client/compare/v0.1.0...v0.1.1) (2019-01-13)
+
+### Bug Fixes
+
+- **typings:** add missings typings ([b366807](https://github.com/charjac/peertube-client/commit/b366807))
+- **typings:** change list return type ([c04dedd](https://github.com/charjac/peertube-client/commit/c04dedd))
+
 <a name="0.1.0"></a>
 
 # 0.1.0 (2019-01-08)
