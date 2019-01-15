@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import querystring from 'query-string';
 
 /* tslint:disable */
