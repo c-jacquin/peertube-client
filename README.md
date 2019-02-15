@@ -18,7 +18,10 @@ npm i peertube-client
 ## Getting started
 
 This library handle all the oauth process for you just give an instance host, a username and a password and you are ready to go.
-Let's demonstrate simple usage with ... example:
+
+For now video upload is not supported, i cannot achive to make it work, pr are more than welcome :).
+
+Let's demonstrate simple usage with :
 
 ```ts
 import { Peertube } from 'peertube-client';
