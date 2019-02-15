@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.2"></a>
+
+## [0.2.2](https://github.com/charjac/peertube-client/compare/v0.2.1...v0.2.2) (2019-02-15)
+
+### Bug Fixes
+
+- **ajax:** fix fetch issue ([2761c93](https://github.com/charjac/peertube-client/commit/2761c93))
+
 <a name="0.2.1"></a>
 
 ## [0.2.1](https://github.com/charjac/peertube-client/compare/v0.2.0...v0.2.1) (2019-02-15)
