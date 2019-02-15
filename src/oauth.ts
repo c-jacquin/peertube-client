@@ -45,27 +45,31 @@ export class OAuth {
     return access_token;
   }
 
-  protected authFetch<T>(input: string, init: AjaxOptions = {}) {
-    const headers = {
-      ...init.headers,
-      Authorization: `Bearer ${this.accessToken}`,
-    };
+  protected async authFetch<T>(input: string, init: AjaxOptions = {}) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
 
     return ajax<T>(`${this.baseUrl}${input}`, {
       ...init,
-      headers,
+      headers: {
+        ...init.headers,
+        Authorization: `Bearer ${this.accessToken}`,
+      },
     });
   }
 
-  protected authUpload<T>(input: string, init: UploadOptions) {
-    const headers = {
-      ...init.headers,
-      Authorization: `Bearer ${this.accessToken}`,
-    };
+  protected async authUpload<T>(input: string, init: UploadOptions) {
+    if (!this.accessToken) {
+      await this.authenticate();
+    }
 
     return upload<T>(`${this.baseUrl}${input}`, {
       ...init,
-      headers,
+      headers: {
+        ...init.headers,
+        Authorization: `Bearer ${this.accessToken}`,
+      },
     });
   }
 }
