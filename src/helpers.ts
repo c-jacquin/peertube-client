@@ -1,44 +1,63 @@
-import 'isomorphic-fetch';
-import querystring from 'query-string';
+const querystring = (obj: Record<string, string>): string => {
+  return Object.keys(obj).reduce((acc, key) => `${acc}&${key}=${obj[key]}`, '');
+};
 
-/* tslint:disable */
-export interface AjaxOptions extends RequestInit {
-  body?: any;
-  query?: any;
+const formdata = (obj: Record<string, string>): FormData => {
+  const formData = new FormData();
+  Object.keys(obj).forEach(key => formData.append(key, obj[key]));
+
+  return formData;
+};
+
+export interface AjaxOptions {
+  method?: 'POST' | 'GET' | 'PUT' | 'DELETE';
+  query?: {};
+  body?: {};
+  headers?: {};
 }
 export const ajax = async <T>(
   input: string,
   init?: AjaxOptions,
 ): Promise<T> => {
+  let options;
   if (init && init.body) {
-    init.body = JSON.stringify(init.body);
-    init.headers = {
-      ['Content-Type']: 'application/json',
-      ...init.headers,
+    options = {
+      body: querystring(init.body),
+      headers: {
+        ['Content-Type']: 'application/x-www-form-urlencoded',
+        ...(init.headers ? init.headers : {}),
+      },
     };
   }
+
   let url = input;
   if (init && init.query) {
-    url += `?${querystring.stringify(init.query)}`;
+    url += `?${querystring(init.query)}`;
   }
-  const res = await fetch(url, init);
-
-  return res.json();
+  const res = await fetch(url, options);
+  const json = await res.json();
+  if (res.ok) {
+    return res.json();
+  } else {
+    throw json;
+  }
 };
+
+export interface UploadOptions {
+  body: {};
+  headers?: {};
+}
 
 export const upload = async <T>(
   input: string,
-  init: AjaxOptions,
+  init: UploadOptions,
 ): Promise<T> => {
-  init.body = querystring.stringify(init.body);
-  init.headers = {
-    ...init.headers,
-    ['Content-Type']: 'application/x-www-form-urlencoded',
-  };
-
-  const res = await fetch(input, init);
-
-  return res.json();
+  const res = await fetch(input, {
+    ...init,
+    method: 'POST',
+    body: formdata(init.body),
+  });
+  const json = await res.json();
+  if (res.ok) return json as T;
+  else throw json as Error;
 };
-
-/* tslint:enable */

@@ -170,11 +170,11 @@ export class Peertube extends OAuth {
     return this.authFetch(`/users/${id}`, { method: 'PUT', body });
   }
 
-  whoAmI(): Promise<User> {
+  getMyself(): Promise<User> {
     return this.authFetch('/users/me');
   }
 
-  updateMySelf(body: UpdateMyselfPayload): Promise<string> {
+  updateMyself(body: UpdateMyselfPayload): Promise<string> {
     return this.authFetch('/users/me', { method: 'PUT', body });
   }
 
@@ -225,7 +225,6 @@ export class Peertube extends OAuth {
 
   updateAvatar(body: AvatarPayload): Promise<Avatar> {
     return this.authUpload('/users/me/avatar/pick', {
-      method: 'POST',
       body,
     });
   }
