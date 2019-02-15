@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+
+# [0.2.0](https://github.com/charjac/peertube-client/compare/v0.1.2...v0.2.0) (2019-02-15)
+
+### Bug Fixes
+
+- **typings:** improve typings ([efece7e](https://github.com/charjac/peertube-client/commit/efece7e))
+
+### Features
+
+- **auth:** auto authent if not already done ([d01f70f](https://github.com/charjac/peertube-client/commit/d01f70f))
+
 <a name="0.1.2"></a>
 
 ## [0.1.2](https://github.com/charjac/peertube-client/compare/v0.1.1...v0.1.2) (2019-01-15)
