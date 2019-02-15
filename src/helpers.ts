@@ -37,7 +37,7 @@ export const ajax = async <T>(
   const res = await fetch(url, options);
   const json = await res.json();
   if (res.ok) {
-    return res.json();
+    return json as T;
   } else {
     throw json;
   }
