@@ -9,10 +9,18 @@ export interface Config {
       css: string;
     };
   };
+  email: {
+    enabled: boolean;
+  };
+  contactForm: {
+    enabled: true;
+  };
   serverVersion: string;
   serverCommit: string;
   signup: {
     allowed: boolean;
+    allowedForCurrentIP: boolean;
+    requiresEmailVerification: boolean;
   };
   transcoding: {
     enabledResolutions: number[];
@@ -57,5 +65,10 @@ export interface Config {
   user: {
     videoQuota: number;
     videoQuotaDaily: number;
+  };
+  trending: {
+    videos: {
+      intervalDays: number;
+    };
   };
 }

@@ -5,5 +5,7 @@
  * Definitions: https://github.com/charjac/peertube-client
  * TypeScript Version: 3.2
  */
+import 'isomorphic-fetch';
+import 'isomorphic-form-data';
 
 export { Peertube } from './peertube';

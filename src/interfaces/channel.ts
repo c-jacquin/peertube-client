@@ -2,7 +2,7 @@ import { Avatar } from './account';
 
 export interface Channel {
   id: number;
-  url: string;
+  url?: string;
   uuid: string;
   name: string;
   host: string;
@@ -13,8 +13,8 @@ export interface Channel {
   createdAt: string;
   updatedAt: string;
   displayName: string;
-  description: string;
-  support: string;
+  description?: string;
+  support?: string;
   isLocal: boolean;
   ownerAccount: Account;
 }

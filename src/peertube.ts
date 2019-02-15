@@ -23,9 +23,8 @@ import {
   ListVideoParamsFull,
   SearchListParams,
   UpdateVideoPayload,
-  UploadVideoPayload,
-  UploadVideoResponse,
   Video,
+  VideoDetails,
 } from './interfaces/video';
 import { OAuth } from './oauth';
 
@@ -56,19 +55,19 @@ export class Peertube extends OAuth {
     return this.fetch('/about');
   }
 
-  getCategories(): Promise<string[]> {
+  getCategories(): Promise<Record<string, string>> {
     return this.fetch('/videos/categories');
   }
 
-  getLicences(): Promise<string[]> {
+  getLicences(): Promise<Record<string, string>> {
     return this.fetch('/videos/licences');
   }
 
-  getLanguages(): Promise<string[]> {
+  getLanguages(): Promise<Record<string, string>> {
     return this.fetch('/videos/languages');
   }
 
-  getPrivacies(): Promise<string[]> {
+  getPrivacies(): Promise<Record<string, string>> {
     return this.fetch('/videos/privacies');
   }
 
@@ -96,7 +95,7 @@ export class Peertube extends OAuth {
     return this.fetch('/videos', { query });
   }
 
-  getVideo(id: number): Promise<Video> {
+  getVideo(id: number): Promise<VideoDetails> {
     return this.fetch(`/videos/${id}`);
   }
 
@@ -265,12 +264,12 @@ export class Peertube extends OAuth {
     });
   }
 
-  uploadVideo(body: UploadVideoPayload): Promise<UploadVideoResponse> {
-    return this.authUpload('/videos/upload', {
-      method: 'POST',
-      body,
-    });
-  }
+  // uploadVideo(body: UploadVideoPayload): Promise<UploadVideoResponse> {
+  //   return this.authUpload('/videos/upload', {
+  //     method: 'POST',
+  //     body,
+  //   });
+  // }
 
   rateVideo(id: number, body: { rate: number }) {
     return this.authFetch(`/videos/${id}/rate`, { method: 'POST', body });

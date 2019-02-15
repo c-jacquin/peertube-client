@@ -4,12 +4,15 @@ export interface Account {
   url: string;
   name: string;
   host: string;
+  hostRedundancyAllowed: boolean;
   followingCount: number;
   followersCount: number;
   createdAt: string;
   updatedAt: string;
-  avatar: Avatar;
+  avatar?: Avatar;
   displayName: string;
+  description?: string;
+  userId?: number;
 }
 
 export interface List<T> {

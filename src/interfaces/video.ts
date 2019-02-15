@@ -1,13 +1,15 @@
+import { Stream } from 'stream';
 import { Channel } from './channel';
 
 export interface SimpleItem {
-  id: number;
-  label: string;
+  id?: number;
+  label?: string;
 }
 
 export interface Video {
   id: number;
   uuid: string;
+  name: string;
   createdAt: string;
   publishedAt: string;
   updatedAt: string;
@@ -15,10 +17,9 @@ export interface Video {
   licence: SimpleItem;
   language: SimpleItem;
   privacy: string;
-  description: string;
+  description?: string;
   duration: number;
   isLocal: boolean;
-  name: string;
   thumbnailPath: string;
   previewPath: string;
   embedPath: string;
@@ -28,6 +29,17 @@ export interface Video {
   nsfw: boolean;
   account: Partial<Account>;
   channel: Partial<Channel>;
+}
+
+export interface VideoDetails extends Video {
+  blacklisted: boolean;
+  blacklistedReason?: string;
+  support?: string;
+  descriptionPath?: string;
+  tags: string[];
+  commentsEnabled: boolean;
+  waitTranscoding: boolean;
+  state: SimpleItem;
 }
 
 export interface BasicListParams {
@@ -101,12 +113,24 @@ export interface UpdateVideoPayload {
   tags?: string;
   thumbnailfile?: string;
   waitTranscoding?: string;
+  files: VideoFile[];
+}
+
+interface VideoFile {
+  resolution: SimpleItem;
+  magnetUri: string;
+  size: number;
+  fps: number;
+  torrentUrl: string;
+  torrentDownloadUrl: string;
+  fileUrl: string;
+  fileDownloadUrl: string;
 }
 
 export interface UploadVideoPayload extends UpdateVideoPayload {
-  channelId: string;
+  channelId: number;
   name: string;
-  videofile: string;
+  videofile: Stream | string | Buffer | ArrayBuffer;
 }
 
 export interface UploadVideoResponse {

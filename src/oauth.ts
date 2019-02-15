@@ -22,28 +22,37 @@ export class OAuth {
   }
 
   async authenticate() {
-    const { client_id, client_secret } = await ajax<Client>(
-      '/oauth-clients/local',
-    );
+    try {
+      const { client_id, client_secret } = await ajax<Client>(
+        `${this.baseUrl}/oauth-clients/local`,
+      );
+      this.clientId = client_id;
+      this.clientSecret = client_secret;
 
-    this.clientId = client_id;
-    this.clientSecret = client_secret;
+      const { access_token } = await ajax<Token>(
+        `${this.baseUrl}/users/token`,
+        {
+          method: 'POST',
+          body: {
+            client_id,
+            client_secret,
+            grant_type: 'password',
+            response_type: 'code',
+            username: this.user,
+            password: this.password,
+          },
+        },
+      );
 
-    const { access_token } = await ajax<Token>(`${this.baseUrl}/users/token`, {
-      method: 'POST',
-      body: JSON.stringify({
-        client_id,
-        client_secret,
-        grant_type: 'password',
-        response_type: 'code',
-        username: this.user,
-        password: this.password,
-      }),
-    });
+      this.accessToken = access_token;
 
-    this.accessToken = access_token;
-
-    return access_token;
+      return access_token;
+    } catch (err) {
+      /* tslint:disable */
+      console.log('ERRPRPRPRPR AUTH');
+      console.error(err);
+      throw err;
+    }
   }
 
   protected authFetch<T>(input: string, init: AjaxOptions = {}) {
@@ -62,6 +71,7 @@ export class OAuth {
     const headers = {
       ...init.headers,
       Authorization: `Bearer ${this.accessToken}`,
+      // 'Content-Type': 'multipart/form-data',
     };
 
     return upload<T>(`${this.baseUrl}${input}`, {
