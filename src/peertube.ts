@@ -23,6 +23,8 @@ import {
   ListVideoParamsFull,
   SearchListParams,
   UpdateVideoPayload,
+  // UploadVideoPayload,
+  // UploadVideoResponse,
   Video,
   VideoDetails,
 } from './interfaces/video';
@@ -265,7 +267,6 @@ export class Peertube extends OAuth {
 
   // uploadVideo(body: UploadVideoPayload): Promise<UploadVideoResponse> {
   //   return this.authUpload('/videos/upload', {
-  //     method: 'POST',
   //     body,
   //   });
   // }

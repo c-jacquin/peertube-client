@@ -29,7 +29,6 @@ export class OAuth {
     this.clientSecret = client_secret;
 
     const { access_token } = await ajax<Token>(`${this.baseUrl}/users/token`, {
-      method: 'POST',
       body: {
         client_id,
         client_secret,

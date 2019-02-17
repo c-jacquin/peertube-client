@@ -1,5 +1,7 @@
-const querystring = (obj: Record<string, string>): string => {
-  return Object.keys(obj).reduce((acc, key) => `${acc}&${key}=${obj[key]}`, '');
+const querystring = (params: Record<string, string>): string => {
+  return Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&');
 };
 
 const formdata = (obj: Record<string, string>): FormData => {
@@ -22,6 +24,7 @@ export const ajax = async <T>(
   let options;
   if (init && init.body) {
     options = {
+      method: init.method || 'POST',
       body: querystring(init.body),
       headers: {
         ['Content-Type']: 'application/x-www-form-urlencoded',
@@ -34,13 +37,11 @@ export const ajax = async <T>(
   if (init && init.query) {
     url += `?${querystring(init.query)}`;
   }
+
   const res = await fetch(url, options);
-  const json = await res.json();
-  if (res.ok) {
-    return json as T;
-  } else {
-    throw json;
-  }
+
+  if (res.ok) return res.json();
+  else throw await res.text();
 };
 
 export interface UploadOptions {
@@ -57,7 +58,6 @@ export const upload = async <T>(
     method: 'POST',
     body: formdata(init.body),
   });
-  const json = await res.json();
-  if (res.ok) return json as T;
-  else throw json as Error;
+  if (res.ok) return res.json();
+  else throw await res.text();
 };

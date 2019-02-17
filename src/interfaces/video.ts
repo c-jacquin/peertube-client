@@ -29,6 +29,7 @@ export interface Video {
   nsfw: boolean;
   account: Partial<Account>;
   channel: Partial<Channel>;
+  files?: VideoFile[];
 }
 
 export interface VideoDetails extends Video {
@@ -113,7 +114,6 @@ export interface UpdateVideoPayload {
   tags?: string;
   thumbnailfile?: string;
   waitTranscoding?: string;
-  files: VideoFile[];
 }
 
 interface VideoFile {
